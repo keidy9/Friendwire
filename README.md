@@ -18,14 +18,14 @@ Add/remove friends <br />
 Configured for mobile use <br />
 Make posts with images attached <br />
 Delete posts <br />
+Search for other people using the search bar <br />
 
 ### Features to be implemented
 
-Search for other people using the search bar <br />
 Sort or filter posts to show friends only <br />
 Edit your own posts <br />
 Display correct number of profile views <br />
-Ability to add social profiles such as LinkedIn or Twitter <br />
+Add social profiles such as LinkedIn or Twitter <br />
 Change profile picture <br />
 
 
