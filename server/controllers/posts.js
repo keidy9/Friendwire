@@ -79,9 +79,13 @@ export const addComment = async (req, res) => {
     const post = await Post.findById(id);
     const currentComments = post.comments;
 
-    const updatedPost = await Post.findByIdAndUpdate(id, {
-      comments: [...currentComments, comment],
-    });
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      {
+        comments: [...currentComments, comment],
+      },
+      { new: true }
+    );
 
     res.status(200).json(updatedPost);
   } catch (err) {
