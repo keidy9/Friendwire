@@ -107,9 +107,8 @@ const PostWidget = ({
   const onEnterKeyDown = (e) => {
     if (e.key === "Enter" && e.key !== "Shift") {
       patchComment();
-    } else {
-      setComment((prevState) => prevState + "\n");
     }
+    if (e.key === "Enter" && e.key === "Shift") setComment((prevState) => prevState + "\n");
   };
 
   return (
