@@ -72,6 +72,24 @@ export const likePost = async (req, res) => {
   }
 };
 
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, comment } = req.body;
+    const post = await Post.findById(id);
+    const currentComments = post.comments;
+
+    const updatedPost = await Post.findByIdAndUpdate(id, {
+      comments: [...currentComments, comment],
+    });
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+/* Delete */
 export const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
