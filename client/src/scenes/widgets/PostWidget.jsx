@@ -103,6 +103,14 @@ const PostWidget = ({
     setComment(e.target.value);
   };
 
+  const onEnterKeyDown = (e) => {
+    if (e.keyCode === "13" && !e.shiftKey) // Keycode 13 is the "Enter" key
+    {  
+      patchComment();
+      setComment("");
+    }
+  };
+
   return (
     <WidgetWrapper m="2rem 0" maxWidth="700px">
       <Friend
@@ -207,10 +215,9 @@ const PostWidget = ({
               placeholder="Write a comment..."
               fullWidth={true}
               multiline={true}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") patchComment();
-              }}
+              onKeyDown={onEnterKeyDown}
               onChange={onCommentChangeHandler}
+              value={comment}
             />
             <IconButton onClick={patchComment}>
               <Send />
