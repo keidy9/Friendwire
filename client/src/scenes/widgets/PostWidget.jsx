@@ -104,7 +104,7 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="2rem 0" maxWidth="700px">
       <Friend
         friendId={postUserId}
         name={name}
@@ -189,16 +189,27 @@ const PostWidget = ({
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+              <Typography
+                sx={{
+                  color: main,
+                  m: "0.5rem 0",
+                  pl: "1rem",
+                  wordWrap: "break-word",
+                }}
+              >
                 {comment}
               </Typography>
             </Box>
           ))}
           <Divider />
-          <FlexBetween>
+          <FlexBetween padding="0 15px">
             <InputBase
               placeholder="Write a comment..."
               fullWidth={true}
+              multiline={true}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") patchComment();
+              }}
               onChange={onCommentChangeHandler}
             />
             <IconButton onClick={patchComment}>
