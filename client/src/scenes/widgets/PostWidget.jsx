@@ -4,6 +4,7 @@ import {
   FavoriteOutlined,
   ShareOutlined,
   MoreVert,
+  Send
 } from "@mui/icons-material";
 import {
   Box,
@@ -13,6 +14,7 @@ import {
   useTheme,
   Menu,
   MenuItem,
+  TextField,
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
@@ -36,6 +38,7 @@ const PostWidget = ({
   const [isComments, setIsComments] = useState(false);
   const [isPostOptions, setIsPostOptions] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
@@ -73,6 +76,32 @@ const PostWidget = ({
     setIsPostOptions(!isPostOptions);
     getPosts();
   };
+
+  const patchComment = async () => {
+
+    console.log("comment",comment);
+
+    const response = await fetch(
+      `https://friendwire.fly.dev/posts/${postId}/comment`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId, comment }),
+      }
+    );
+    const updatedPost = await response.json();
+    console.log("updatedPost", updatedPost);
+
+    dispatch(setPost({ post: updatedPost }));
+  }
+
+  const onCommentChangeHandler = (e) => {
+    setComment(e.target.value);
+  }
+  
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -167,6 +196,17 @@ const PostWidget = ({
               </Typography>
             </Box>
           ))}
+          <Divider />
+          <TextField 
+          id="outlined-basic"
+          label="Outlined"
+          variant="outlined"
+          onChange={onCommentChangeHandler}
+          />
+          <IconButton onClick={patchComment}>
+        <Send />
+          </IconButton>
+
           <Divider />
         </Box>
       )}
