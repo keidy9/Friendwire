@@ -4,7 +4,7 @@ import {
   FavoriteOutlined,
   ShareOutlined,
   MoreVert,
-  Send
+  Send,
 } from "@mui/icons-material";
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   useTheme,
   Menu,
   MenuItem,
-  TextField,
+  InputBase,
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
@@ -78,30 +78,30 @@ const PostWidget = ({
   };
 
   const patchComment = async () => {
+    console.log("comment", comment);
 
-    console.log("comment",comment);
+    if (comment) {
+      const response = await fetch(
+        `https://friendwire.fly.dev/posts/${postId}/comment`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: loggedInUserId, comment }),
+        }
+      );
+      const updatedPost = await response.json();
+      console.log("updatedPost", updatedPost);
 
-    const response = await fetch(
-      `https://friendwire.fly.dev/posts/${postId}/comment`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: loggedInUserId, comment }),
-      }
-    );
-    const updatedPost = await response.json();
-    console.log("updatedPost", updatedPost);
-
-    dispatch(setPost({ post: updatedPost }));
-  }
+      dispatch(setPost({ post: updatedPost }));
+    }
+  };
 
   const onCommentChangeHandler = (e) => {
     setComment(e.target.value);
-  }
-  
+  };
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -137,9 +137,7 @@ const PostWidget = ({
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
-            <IconButton
-              onClick={() => setIsComments(!isComments)}
-            >
+            <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
@@ -197,16 +195,16 @@ const PostWidget = ({
             </Box>
           ))}
           <Divider />
-          <TextField 
-          id="outlined-basic"
-          label="Outlined"
-          variant="outlined"
-          onChange={onCommentChangeHandler}
-          />
-          <IconButton onClick={patchComment}>
-        <Send />
-          </IconButton>
-
+          <FlexBetween>
+            <InputBase
+              placeholder="Write a comment..."
+              fullWidth={true}
+              onChange={onCommentChangeHandler}
+            />
+            <IconButton onClick={patchComment}>
+              <Send />
+            </IconButton>
+          </FlexBetween>
           <Divider />
         </Box>
       )}
