@@ -96,6 +96,7 @@ const PostWidget = ({
       console.log("updatedPost", updatedPost);
 
       dispatch(setPost({ post: updatedPost }));
+      setComment("");
     }
   };
 
@@ -104,10 +105,10 @@ const PostWidget = ({
   };
 
   const onEnterKeyDown = (e) => {
-    if (e.keyCode === "13" && !e.shiftKey) // Keycode 13 is the "Enter" key
-    {  
+    if (e.key === "Enter" && e.key !== "Shift") {
       patchComment();
-      setComment("");
+    } else {
+      setComment((prevState) => prevState + "\n");
     }
   };
 
