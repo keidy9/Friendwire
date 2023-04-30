@@ -196,6 +196,7 @@ const PostWidget = ({
                   m: "0.5rem 0",
                   pl: "1rem",
                   wordWrap: "break-word",
+                  whiteSpace:"pre-wrap"
                 }}
               >
                 {comment}
